@@ -30,8 +30,10 @@ El proyecto está completamente migrado y estructurado con **Astro JS**:
 ```text
 /
 ├── public/
-│   ├── favicon.svg              # Favicon SVG vectorial original
-│   ├── logo.svg                 # Logotipo SVG vectorial original con tipografía y símbolo
+│   ├── favicon.png              # Favicon (64x64, fondo transparente)
+│   ├── apple-touch-icon.png     # Ícono para iOS (180x180, fondo crema)
+│   ├── logo.webp                # Logotipo horizontal (header), fondo transparente
+│   ├── logo-footer.webp         # Sello circular (footer), fondo transparente
 │   ├── sitemap.xml              # Mapa del sitio para indexación
 │   └── images/                  # Fotografías gastronómicas de alta calidad
 ├── src/
