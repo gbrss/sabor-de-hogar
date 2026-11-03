@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://dulceesencia.cl',
+  site: 'https://sabordehogar.cl',
   server: {
     port: 3000,
     host: '0.0.0.0',

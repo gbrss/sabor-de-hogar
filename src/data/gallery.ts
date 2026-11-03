@@ -56,7 +56,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     alt: "Pan de Pascua envuelto en papel kraft con lazo de hilo burdeo y ramita aromática",
     category: "Presentación",
     whatsappMessage:
-      "¡Hola Dulce Esencia! Me interesa la presentación para regalo de pan de Pascua. ¿Cómo puedo encargar?",
+      "¡Hola Sabor de Hogar! Me interesa la presentación para regalo de pan de Pascua. ¿Cómo puedo encargar?",
   },
   {
     id: "ingredientes-nobles",

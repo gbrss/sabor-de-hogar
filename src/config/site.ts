@@ -1,5 +1,5 @@
 /**
- * Configuración central del negocio y enlaces de Dulce Esencia.
+ * Configuración central del negocio y enlaces de Sabor de Hogar.
  * Permite cambiar fácilmente números de contacto, mensajes de WhatsApp y dominios.
  */
 
@@ -25,7 +25,7 @@ export interface SiteConfig {
 }
 
 export const SITE_CONFIG: SiteConfig = {
-  name: "Dulce Esencia",
+  name: "Sabor de Hogar",
   tagline: "El sabor de la Navidad, hecho en casa",
   description:
     "Pan de Pascua casero con esencia natural preparada artesanalmente en Santiago de Chile. Pedidos y consultas directas por WhatsApp.",
@@ -33,22 +33,22 @@ export const SITE_CONFIG: SiteConfig = {
   city: "Santiago",
   phoneDisplay: "+56 9 5007 5329",
   whatsappNumber: "56950075329",
-  domain: "https://dulceesencia.cl",
+  domain: "https://sabordehogar.cl",
   messages: {
     default:
-      "¡Hola! Vi la página de Dulce Esencia y me gustaría conocer las opciones disponibles para encargar pan de Pascua. ¿Me pueden entregar más información?",
+      "¡Hola! Vi la página de Sabor de Hogar y me gustaría conocer las opciones disponibles para encargar pan de Pascua. ¿Me pueden entregar más información?",
     hero:
-      "¡Hola Dulce Esencia! Me encantaría encargar un pan de Pascua casero para esta Navidad en Santiago. ¿Cómo coordinamos mi pedido?",
+      "¡Hola Sabor de Hogar! Me encantaría encargar un pan de Pascua casero para esta Navidad en Santiago. ¿Cómo coordinamos mi pedido?",
     essence:
       "¡Hola! Me llamó mucho la atención la esencia natural que preparan para sus panes de Pascua. Quisiera hacer una consulta para encargar.",
     gallery:
-      "¡Hola! Vi las fotografías del pan de Pascua en la web de Dulce Esencia y quiero encargar. ¿Qué opciones tienen disponibles?",
+      "¡Hola! Vi las fotografías del pan de Pascua en la web de Sabor de Hogar y quiero encargar. ¿Qué opciones tienen disponibles?",
     cta:
-      "¡Hola! Deseo encargar pan de Pascua casero de Dulce Esencia para compartir en familia. ¿Tienen disponibilidad para coordinar?",
+      "¡Hola! Deseo encargar pan de Pascua casero de Sabor de Hogar para compartir en familia. ¿Tienen disponibilidad para coordinar?",
     faqIngredients:
-      "¡Hola Dulce Esencia! Quisiera consultar sobre los ingredientes específicos de sus panes de Pascua y opciones para encargar.",
+      "¡Hola Sabor de Hogar! Quisiera consultar sobre los ingredientes específicos de sus panes de Pascua y opciones para encargar.",
     faqDelivery:
-      "¡Hola Dulce Esencia! Quisiera consultar sobre los sectores de entrega en Santiago y fechas para coordinar mi pedido.",
+      "¡Hola Sabor de Hogar! Quisiera consultar sobre los sectores de entrega en Santiago y fechas para coordinar mi pedido.",
   },
   navLinks: [
     { label: "Inicio", href: "#inicio" },

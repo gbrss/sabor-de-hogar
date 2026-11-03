@@ -8,8 +8,8 @@ interface Props {
 }
 
 const {
-  title = "Dulce Esencia | Pan de Pascua Casero en Santiago",
-  description = "Descubre Dulce Esencia, pan de Pascua casero con esencia natural preparada artesanalmente. Consulta y coordina tu pedido por WhatsApp en Santiago.",
+  title = "Sabor de Hogar | Pan de Pascua Casero en Santiago",
+  description = "Descubre Sabor de Hogar, pan de Pascua casero con esencia natural preparada artesanalmente. Consulta y coordina tu pedido por WhatsApp en Santiago.",
   image = "/images/hero_pan_de_pascua.jpg",
 } = Astro.props;
 
@@ -28,15 +28,15 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="keywords" content="pan de pascua casero, dulce esencia, pan de pascua artesanal santiago, navidad chile, esencia natural pan de pascua" />
-    <meta name="author" content="Dulce Esencia" />
+    <meta name="keywords" content="pan de pascua casero, sabor de hogar,pan de pascua artesanal santiago, navidad chile, esencia natural pan de pascua" />
+    <meta name="author" content="Sabor de Hogar" />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph / Redes Sociales -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:locale" content="es_CL" />
-    <meta property="og:site_name" content="Dulce Esencia" />
+    <meta property="og:site_name" content="Sabor de Hogar" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
@@ -61,7 +61,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
       {
         "@context": "https://schema.org",
         "@type": "Bakery",
-        "name": "Dulce Esencia",
+        "name": "Sabor de Hogar",
         "description": "Pan de Pascua casero con esencia natural preparada artesanalmente en Santiago de Chile.",
         "telephone": "+56950075329",
         "address": {

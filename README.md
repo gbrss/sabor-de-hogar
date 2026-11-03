@@ -1,13 +1,13 @@
-# Dulce Esencia · Pan de Pascua Casero con Esencia Natural
+# Sabor de Hogar · Pan de Pascua Casero con Esencia Natural
 ### Santiago de Chile
 
-Landing page profesional, moderna, cálida y de alto rendimiento diseñada para **Dulce Esencia**, una marca artesanal de pan de Pascua casero en Santiago de Chile. Desarrollada con un enfoque editorial gastronómico, paleta navideña tradicional, integración completa de pedidos por WhatsApp y optimización SEO local.
+Landing page profesional, moderna, cálida y de alto rendimiento diseñada para **Sabor de Hogar**, una marca artesanal de pan de Pascua casero en Santiago de Chile. Desarrollada con un enfoque editorial gastronómico, paleta navideña tradicional, integración completa de pedidos por WhatsApp y optimización SEO local.
 
 ---
 
 ## 📋 Resumen del Proyecto
 
-- **Marca:** Dulce Esencia
+- **Marca:** Sabor de Hogar
 - **Producto:** Pan de Pascua casero artesanal
 - **Diferenciador principal:** Esencia natural preparada artesanalmente mediante infusión propia de especias
 - **Ubicación:** Santiago de Chile
@@ -101,12 +101,12 @@ Todos los mensajes y el número de contacto están centralizados en un único ar
 
 ```typescript
 export const SITE_CONFIG = {
-  name: "Dulce Esencia",
+  name: "Sabor de Hogar",
   phoneDisplay: "+56 9 5007 5329",
   whatsappNumber: "56950075329", // Número internacional sin '+' ni espacios
   messages: {
-    default: "¡Hola! Vi la página de Dulce Esencia...",
-    hero: "¡Hola Dulce Esencia! Me encantaría encargar un pan de Pascua...",
+    default: "¡Hola! Vi la página de Sabor de Hogar...",
+    hero: "¡Hola Sabor de Hogar! Me encantaría encargar un pan de Pascua...",
     // ...
   }
 };
@@ -117,7 +117,7 @@ Al modificar este archivo, todos los botones de la página se actualizan automá
 Las fotografías están ubicadas en:
 👉 `src/assets/images/`
 
-Para reemplazar con las fotografías reales del dueño de Dulce Esencia:
+Para reemplazar con las fotografías reales del dueño de Sabor de Hogar:
 - Guarda tus fotos en formato `.jpg` o `.webp`.
 - Actualiza las rutas en `src/data/gallery.ts` y en `src/components/Hero.tsx` y `BrandStory.tsx`.
 - Las dimensiones recomendadas son proporción `16:9` o `4:3` en alta resolución (1200px a 1600px de ancho).
@@ -125,7 +125,7 @@ Para reemplazar con las fotografías reales del dueño de Dulce Esencia:
 ### 3. Actualizar el dominio final
 En `src/config/site.ts` y en `index.html` (o `astro-project/astro.config.mjs`), reemplaza:
 ```typescript
-domain: "https://dulceesencia.cl",
+domain: "https://sabordehogar.cl",
 ```
 por el subdominio gratuito o dominio definitivo (`.cl` o `.com`) que adquiera el negocio.
 
@@ -141,7 +141,7 @@ por el subdominio gratuito o dominio definitivo (`.cl` o `.com`) que adquiera el
    - **Framework preset:** `Vite` (o `Astro` si conectas la carpeta `astro-project`).
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-5. Haz clic en **Save and Deploy**. En menos de 1 minuto tendrás una URL pública HTTPS gratuita (`https://dulce-esencia.pages.dev`).
+5. Haz clic en **Save and Deploy**. En menos de 1 minuto tendrás una URL pública HTTPS gratuita (`https://sabor-de-hogar.pages.dev`).
 
 ### Opción B: Despliegue con Vercel
 1. Conecta tu repositorio en [vercel.com](https://vercel.com).
@@ -152,7 +152,7 @@ por el subdominio gratuito o dominio definitivo (`.cl` o `.com`) que adquiera el
 
 ## 📝 Lista de Datos y Fotografías que el Dueño Debe Entregar
 
-Para pasar a la versión 100% definitiva de Dulce Esencia, se recomienda que el dueño proporcione:
+Para pasar a la versión 100% definitiva de Sabor de Hogar, se recomienda que el dueño proporcione:
 
 1. **Fotografías reales en alta calidad:**
    - Pan de Pascua completo horneado en su presentación de venta.

@@ -14,11 +14,11 @@ const {
   size = 'md',
   class: className = '',
   showIcon = true,
-  ariaLabel = 'Contactar a Dulce Esencia por WhatsApp',
+  ariaLabel = 'Contactar a Sabor de Hogar por WhatsApp',
 } = Astro.props;
 
 const whatsappNumber = '56950075329';
-const defaultMessage = '¡Hola! Vi la página de Dulce Esencia y me gustaría conocer las opciones disponibles para encargar pan de Pascua. ¿Me pueden entregar más información?';
+const defaultMessage = '¡Hola! Vi la página de Sabor de Hogar y me gustaría conocer las opciones disponibles para encargar pan de Pascua. ¿Me pueden entregar más información?';
 const finalMessage = message || defaultMessage;
 const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(finalMessage)}`;
 
