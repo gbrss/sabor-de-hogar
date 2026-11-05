@@ -10,10 +10,58 @@ interface Props {
 const {
   title = "Sabor de Hogar | Pan de Pascua Casero en Santiago",
   description = "Descubre Sabor de Hogar, pan de Pascua casero con esencia natural preparada artesanalmente. Consulta y coordina tu pedido por WhatsApp en Santiago.",
-  image = "/images/hero_pan_de_pascua.jpg",
+  image = "/og-image.jpg",
 } = Astro.props;
 
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url.pathname;
+// Open Graph / Twitter y JSON-LD exigen URLs absolutas
+const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+const imageURL = abs(image);
+const siteURL = abs("/");
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteURL}#website`,
+      url: siteURL,
+      name: "Sabor de Hogar",
+      alternateName: ["Sabor de Hogar Pan de Pascua", "sabordehogar.cl"],
+      inLanguage: "es-CL",
+      publisher: { "@id": `${siteURL}#negocio` },
+    },
+    {
+      "@type": "Bakery",
+      "@id": `${siteURL}#negocio`,
+      url: siteURL,
+      name: "Sabor de Hogar",
+      description:
+        "Pan de Pascua casero con esencia natural preparada artesanalmente en Santiago de Chile.",
+      image: imageURL,
+      logo: abs("/logo.webp"),
+      telephone: "+56950075329",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Santiago",
+        addressRegion: "Región Metropolitana",
+        addressCountry: "CL",
+      },
+      areaServed: { "@type": "City", name: "Santiago" },
+      paymentAccepted: "Coordinación directa por WhatsApp",
+      currenciesAccepted: "CLP",
+      makesOffer: {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Product",
+          name: "Pan de Pascua Casero con Esencia Natural",
+          description:
+            "Elaborado artesanalmente con esencia natural preparada por el elaborador, frutos secos y frutas confitadas.",
+        },
+      },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -29,7 +77,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="keywords" content="pan de pascua casero, sabor de hogar,pan de pascua artesanal santiago, navidad chile, esencia natural pan de pascua" />
+    <meta name="keywords" content="sabor de hogar, sabordehogar.cl, pan de pascua casero, pan de pascua artesanal santiago, navidad chile, esencia natural pan de pascua" />
     <meta name="author" content="Sabor de Hogar" />
     <meta name="robots" content="index, follow" />
 
@@ -40,14 +88,17 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     <meta property="og:site_name" content="Sabor de Hogar" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pan de Pascua casero Sabor de Hogar sobre tabla de madera" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image} />
+    <meta property="twitter:image" content={imageURL} />
 
     <!-- Google Fonts: Cormorant Garamond & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -58,35 +109,7 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
     />
 
     <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Bakery",
-        "name": "Sabor de Hogar",
-        "description": "Pan de Pascua casero con esencia natural preparada artesanalmente en Santiago de Chile.",
-        "telephone": "+56950075329",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Santiago",
-          "addressRegion": "Región Metropolitana",
-          "addressCountry": "CL"
-        },
-        "areaServed": {
-          "@type": "City",
-          "name": "Santiago"
-        },
-        "paymentAccepted": "Coordinación directa por WhatsApp",
-        "currenciesAccepted": "CLP",
-        "makesOffer": {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Pan de Pascua Casero con Esencia Natural",
-            "description": "Elaborado artesanalmente con esencia natural preparada por el elaborador, frutos secos y frutas confitadas."
-          }
-        }
-      }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="bg-[#FFF8EC] text-[#4A3028] antialiased selection:bg-[#7B2638] selection:text-[#FFF8EC] min-h-screen flex flex-col">
     <slot />

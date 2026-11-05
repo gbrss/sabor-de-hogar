@@ -16,7 +16,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Dorado artesanal y corona de frutos",
     description:
       "Horneado lentamente hasta lograr un dorado uniforme y una cubierta de almendras tostadas, nueces enteras y frutas confitadas seleccionadas.",
-    imageSrc: "/images/hero_pan_de_pascua.jpg",
+    imageSrc: "/images/hero_pan_de_pascua.webp",
     alt: "Pan de Pascua casero artesanal completo sobre tabla de roble con almendras y nueces",
     category: "Presentación",
     whatsappMessage:
@@ -28,7 +28,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Miga esponjosa con distribución generosa de frutos",
     description:
       "Al cortar se aprecia la abundancia de nueces, pasas maceradas y el aroma inconfundible de nuestra esencia natural casera de especias.",
-    imageSrc: "/images/galeria_pan_corte_interior.jpg",
+    imageSrc: "/images/galeria_pan_corte_interior.webp",
     alt: "Corte transversal de pan de Pascua chileno mostrando textura suave y frutos secos",
     category: "Textura",
     whatsappMessage:
@@ -40,7 +40,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "El secreto del aroma: infusión propia de especias",
     description:
       "Elaboramos nuestra propia esencia a fuego lento con canela en rama, anís estrellado, clavo de olor, vainilla y ralladura de cítricos.",
-    imageSrc: "/images/esencia_artesanal_preparacion.jpg",
+    imageSrc: "/images/esencia_artesanal_preparacion.webp",
     alt: "Olla tradicional con infusión de especias naturales, canela y vainilla para pan de Pascua",
     category: "Elaboración",
     whatsappMessage:
@@ -52,7 +52,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Envoltorio rústico con cinta borgoña y tarjeta",
     description:
       "Pensado para compartir en la mesa navideña o como un detalle de cariño para familiares, amigos y colaboradores.",
-    imageSrc: "/images/galeria_empaque_regalo.jpg",
+    imageSrc: "/images/galeria_empaque_regalo.webp",
     alt: "Pan de Pascua envuelto en papel kraft con lazo de hilo burdeo y ramita aromática",
     category: "Presentación",
     whatsappMessage:
@@ -64,7 +64,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Ingredientes nobles tratados con dedicación",
     description:
       "Nueces chilenas de primera selección, pasas rubias y morenas, junto a una combinación equilibrada de especias aromáticas.",
-    imageSrc: "/images/ingredientes_frutos_especias.jpg",
+    imageSrc: "/images/ingredientes_frutos_especias.webp",
     alt: "Cuencos rústicos con nueces frescas, pasas doradas y canela en rama sobre mantel de lino",
     category: "Ingredientes",
     whatsappMessage:
@@ -76,7 +76,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Primer plano de la terminación dorada",
     description:
       "El glaseado sutil protege la humedad interior y resalta el brillo natural de las nueces y almendras recién horneadas.",
-    imageSrc: "/images/hero_pan_de_pascua.jpg",
+    imageSrc: "/images/hero_pan_de_pascua.webp",
     alt: "Detalle de la superficie dorada y frutos caramelizados del pan de Pascua casero",
     category: "Textura",
     whatsappMessage:
