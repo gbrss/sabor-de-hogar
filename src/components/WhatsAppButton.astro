@@ -1,10 +1,13 @@
 ---
+import { getWhatsAppUrl } from '../config/site';
+
 interface Props {
   message?: string;
   variant?: 'primary' | 'secondary' | 'outline' | 'white' | 'gold';
   size?: 'sm' | 'md' | 'lg';
   class?: string;
   showIcon?: boolean;
+  /** Solo para botones sin texto visible: si hay texto, el lector de pantalla lee ese texto. */
   ariaLabel?: string;
 }
 
@@ -14,13 +17,11 @@ const {
   size = 'md',
   class: className = '',
   showIcon = true,
-  ariaLabel = 'Contactar a Sabor de Hogar por WhatsApp',
+  ariaLabel,
 } = Astro.props;
 
-const whatsappNumber = '56950075329';
-const defaultMessage = '¡Hola! Vi la página de Sabor de Hogar y me gustaría conocer las opciones disponibles para encargar pan de Pascua. ¿Me pueden entregar más información?';
-const finalMessage = message || defaultMessage;
-const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(finalMessage)}`;
+// Número y mensaje por defecto salen de src/config/site.ts (un solo lugar para cambiarlos)
+const url = getWhatsAppUrl(message);
 
 const baseStyles = 'inline-flex items-center justify-center gap-2.5 font-medium transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] select-none whitespace-nowrap shrink-0';
 
@@ -35,7 +36,7 @@ const variantStyles = {
   secondary: 'bg-[#7B2638] text-[#FFF8EC] hover:bg-[#621E2C] focus-visible:ring-[#7B2638] hover:shadow-md',
   outline: 'bg-transparent text-[#214A35] border border-[#214A35]/30 hover:border-[#214A35] hover:bg-[#214A35]/5 focus-visible:ring-[#214A35]',
   white: 'bg-[#FFF8EC] text-[#214A35] hover:bg-white hover:text-[#183928] focus-visible:ring-[#FFF8EC] hover:shadow-md font-semibold',
-  gold: 'bg-[#C9A45C] text-[#214A35] hover:bg-[#B59048] focus-visible:ring-[#C9A45C] hover:shadow-md font-semibold',
+  gold: 'bg-[#C9A45C] text-[#2A1A15] hover:bg-[#B59048] focus-visible:ring-[#C9A45C] hover:shadow-md font-semibold',
 }[variant];
 ---
 
@@ -58,4 +59,5 @@ const variantStyles = {
   </svg>
 )}
   <slot>Consultar por WhatsApp</slot>
+  <span class="sr-only"> (abre WhatsApp)</span>
 </a>

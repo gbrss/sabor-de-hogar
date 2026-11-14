@@ -4,7 +4,7 @@ import { SITE_CONFIG, getWhatsAppUrl } from '../config/site';
 const url = getWhatsAppUrl(SITE_CONFIG.messages.default);
 ---
 
-<aside aria-label="Contacto flotante" class="fixed bottom-5 right-5 z-40 flex items-center gap-3 pointer-events-auto">
+<aside aria-label="Contacto flotante" data-wa-source="flotante" class="fixed bottom-5 right-5 z-40 flex items-center gap-3 pointer-events-auto">
   <div id="wa-tooltip" class="hidden sm:block opacity-0 transition-opacity duration-200 bg-[#4A3028] text-[#FFF8EC] text-xs font-medium py-2 px-3.5 rounded-lg shadow-lg border border-[#C9A45C]/40 whitespace-nowrap pointer-events-none">
     <span>¿Deseas encargar? ¡Conversemos por WhatsApp!</span>
   </div>

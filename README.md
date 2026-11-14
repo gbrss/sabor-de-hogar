@@ -30,13 +30,16 @@ El proyecto está completamente migrado y estructurado con **Astro JS**:
 ```text
 /
 ├── public/
+│   ├── _headers                 # Caché y cabeceras de seguridad para Cloudflare Pages
 │   ├── favicon.png              # Favicon (64x64, fondo transparente)
 │   ├── apple-touch-icon.png     # Ícono para iOS (180x180, fondo crema)
-│   ├── logo.webp                # Logotipo horizontal (header), fondo transparente
-│   ├── logo-footer.webp         # Sello circular (footer), fondo transparente
-│   ├── sitemap.xml              # Mapa del sitio para indexación
-│   └── images/                  # Fotografías gastronómicas de alta calidad
+│   ├── logo.webp                # Logo con URL fija (lo usa Google en los datos estructurados)
+│   ├── og-image.jpg             # Vista previa al compartir en WhatsApp/Facebook (1200x630)
+│   └── sitemap.xml              # Mapa del sitio para indexación
 ├── src/
+│   ├── assets/
+│   │   ├── images/              # Fotos originales: Astro genera AVIF/WebP en varios tamaños
+│   │   └── brand/               # Logo (header) y sello (footer) en calidad original
 │   ├── components/
 │   │   ├── Header.astro         # Encabezado (Wordmark, enlaces, CTA, menú móvil)
 │   │   ├── Hero.astro           # Portada editorial con fotografía protagonista
@@ -58,9 +61,10 @@ El proyecto está completamente migrado y estructurado con **Astro JS**:
 │   ├── config/
 │   │   └── site.ts              # Configuración centralizada de datos y mensajes
 │   └── data/
-│       └── gallery.ts           # Datos de fotografías, descripciones y mensajes
+│       ├── gallery.ts           # Datos de fotografías, descripciones y mensajes
+│       └── heroImage.ts         # Opciones de la foto principal (la usan el Hero y su precarga)
 │
-├── astro.config.mjs             # Configuración central de Astro con Tailwind
+├── astro.config.mjs             # Astro + Tailwind + fuentes propias (Inter y Cormorant Garamond)
 ├── tsconfig.json                # Configuración TypeScript estricta de Astro
 ├── package.json                 # Scripts de desarrollo y dependencias
 └── README.md                    # Esta guía completa en español
@@ -116,20 +120,34 @@ export const SITE_CONFIG = {
 Al modificar este archivo, todos los botones de la página se actualizan automáticamente con el formato correcto de WhatsApp (`https://wa.me/56950075329?text=...`).
 
 ### 2. Cambiar las fotografías
-Las fotografías están ubicadas en:
+Las fotografías originales están en:
 👉 `src/assets/images/`
 
 Para reemplazar con las fotografías reales del dueño de Sabor de Hogar:
-- Guarda tus fotos en formato `.jpg` o `.webp`.
-- Actualiza las rutas en `src/data/gallery.ts` y en `src/components/Hero.tsx` y `BrandStory.tsx`.
-- Las dimensiones recomendadas son proporción `16:9` o `4:3` en alta resolución (1200px a 1600px de ancho).
+- Guarda las fotos originales (`.jpg`, sin comprimir) en `src/assets/images/`. No hace falta optimizarlas: en cada build Astro genera versiones AVIF y WebP en varios tamaños y recorta según cada sección.
+- Actualiza los `import` en `src/data/gallery.ts`, `src/data/heroImage.ts` (foto principal) y `src/components/BrandStory.astro`.
+- Resolución recomendada: 1600 px de ancho o más.
 
-### 3. Actualizar el dominio final
-En `src/config/site.ts` y en `index.html` (o `astro-project/astro.config.mjs`), reemplaza:
+### 3. Agregar las redes sociales
+En `src/config/site.ts`, completa `social` con las URLs reales de los perfiles. Los íconos del footer y los datos para Google (`sameAs`) aparecen solo para las redes que tengan URL:
 ```typescript
-domain: "https://sabordehogar.cl",
+social: {
+  instagram: "https://www.instagram.com/usuario",
+  facebook: "https://www.facebook.com/pagina",
+  tiktok: "",
+},
 ```
-por el subdominio gratuito o dominio definitivo (`.cl` o `.com`) que adquiera el negocio.
+
+### 4. Medir visitas y clics a WhatsApp
+- **Visitas (sin código ni cookies):** en Cloudflare, abre el proyecto de Pages → **Metrics** → **Web Analytics** → **Enable**.
+- **Clics a WhatsApp:** cada clic ya queda registrado con la sección de origen (`inicio`, `galeria`, `menu`, `flotante`, `footer`...). Para verlos en Google Analytics 4, pega el ID de medición en `src/config/site.ts`:
+  ```typescript
+  analytics: { ga4Id: "G-XXXXXXXXXX" },
+  ```
+  Se registran como el evento `generate_lead`. Con el campo vacío no se carga ningún script externo.
+
+### 5. Actualizar el dominio final
+Si cambia el dominio, actualízalo en `src/config/site.ts` (`domain`), en `astro.config.mjs` (`site`), en `src/pages/robots.txt.ts` y en `public/sitemap.xml`.
 
 ---
 

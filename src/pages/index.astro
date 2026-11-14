@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
@@ -9,9 +10,24 @@ import CallToAction from '../components/CallToAction.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 import FloatingWhatsApp from '../components/FloatingWhatsApp.astro';
+import { HERO_IMAGE } from '../data/heroImage';
+
+// Precarga de la imagen principal (LCP) con la misma srcset AVIF que usa el <Picture> del Hero.
+// Los navegadores sin AVIF ignoran esta precarga (type) y usan la versión WebP del <picture>.
+const { widths, sizes, ...heroOptions } = HERO_IMAGE;
+const heroPreload = await getImage({ ...heroOptions, widths: [...widths], format: 'avif' });
 ---
 
 <BaseLayout>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/avif"
+    imagesrcset={heroPreload.srcSet.attribute}
+    imagesizes={sizes}
+    fetchpriority="high"
+  />
   <Header />
   <main class="flex-1">
   <Hero />

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { Font } from 'astro:assets';
+import { SITE_CONFIG } from '../config/site';
 
 interface Props {
   title?: string;
@@ -18,6 +20,8 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astr
 const abs = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
 const imageURL = abs(image);
 const siteURL = abs("/");
+const sameAs = Object.values(SITE_CONFIG.social).filter(Boolean);
+const { ga4Id } = SITE_CONFIG.analytics;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -48,6 +52,7 @@ const jsonLd = {
         addressCountry: "CL",
       },
       areaServed: { "@type": "City", name: "Santiago" },
+      ...(sameAs.length > 0 ? { sameAs } : {}),
       paymentAccepted: "Coordinación directa por WhatsApp",
       currenciesAccepted: "CLP",
       makesOffer: {
@@ -100,16 +105,55 @@ const jsonLd = {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={imageURL} />
 
-    <!-- Google Fonts: Cormorant Garamond & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Recursos críticos que cada página quiera precargar (p. ej. la imagen principal) -->
+    <slot name="head" />
+
+    <!--
+      Fuentes propias (sin Google Fonts). Solo se precarga la del título; Inter carga en paralelo
+      y mientras tanto se usa un respaldo con métricas ajustadas, así el texto no se mueve y la
+      imagen principal no compite por ancho de banda.
+    -->
+    <Font cssVariable="--font-cormorant" preload={[{ style: 'normal' }]} />
+    <Font cssVariable="--font-inter" />
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!--
+      Medición de clics a WhatsApp. Cada clic se registra con la sección de origen
+      (data-wa-source o el id de la sección). Si hay ID de GA4 en src/config/site.ts se envía
+      como evento `generate_lead`; si no, queda en window.dataLayer (por si se usa Tag Manager).
+      El script de Google se carga recién después de que la página terminó de cargar.
+    -->
+    <script is:inline define:vars={{ ga4Id }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+      if (ga4Id) {
+        window.gtag('js', new Date());
+        window.gtag('config', ga4Id);
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga4Id);
+            document.head.appendChild(s);
+          }, 1500);
+        });
+      }
+      document.addEventListener('click', function (e) {
+        var link = e.target instanceof Element ? e.target.closest('a[href*="wa.me/"]') : null;
+        if (!link) return;
+        var zone = link.closest('[data-wa-source]');
+        var section = link.closest('section[id]');
+        var params = {
+          method: 'whatsapp',
+          wa_source: (zone && zone.getAttribute('data-wa-source')) || (section && section.id) || 'otro',
+          wa_label: (link.textContent || link.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim().slice(0, 80),
+        };
+        if (ga4Id) window.gtag('event', 'generate_lead', params);
+        else window.dataLayer.push(Object.assign({ event: 'whatsapp_click' }, params));
+      }, true);
+    </script>
   </head>
   <body class="bg-[#FFF8EC] text-[#4A3028] antialiased selection:bg-[#7B2638] selection:text-[#FFF8EC] min-h-screen flex flex-col">
     <slot />

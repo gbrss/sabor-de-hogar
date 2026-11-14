@@ -22,6 +22,20 @@ export interface SiteConfig {
     faqDelivery: string;
   };
   navLinks: Array<{ label: string; href: string }>;
+  /** Perfiles reales del negocio. Los que queden vacíos no se muestran en el sitio. */
+  social: {
+    instagram: string;
+    facebook: string;
+    tiktok: string;
+  };
+  analytics: {
+    /**
+     * ID de medición de Google Analytics 4 (formato G-XXXXXXXXXX).
+     * Vacío = no se carga ningún script de analítica. Con ID, se carga después de que la
+     * página termina de cargar y cada clic a WhatsApp se registra como evento `generate_lead`.
+     */
+    ga4Id: string;
+  };
 }
 
 export const SITE_CONFIG: SiteConfig = {
@@ -57,6 +71,14 @@ export const SITE_CONFIG: SiteConfig = {
     { label: "Preguntas", href: "#preguntas" },
     { label: "Contacto", href: "#contacto" },
   ],
+  social: {
+    instagram: "",
+    facebook: "",
+    tiktok: "",
+  },
+  analytics: {
+    ga4Id: "",
+  },
 };
 
 /**

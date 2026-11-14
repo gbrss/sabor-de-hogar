@@ -1,14 +1,17 @@
 ---
+import { Image } from 'astro:assets';
 import WhatsAppButton from './WhatsAppButton.astro';
 import { SITE_CONFIG } from '../config/site';
+import logo from '../assets/brand/logo.webp';
 ---
 
-<header class="sticky top-0 z-40 transition-all duration-200 bg-[#FFF8EC]/95 backdrop-blur-md border-b border-[#C9A45C]/20 py-2">
+<!-- Fondo casi opaco sin backdrop-blur: el blur se recalcula en cada scroll y cuesta en celulares -->
+<header data-wa-source="menu" class="sticky top-0 z-40 transition-all duration-200 bg-[#FFF8EC]/[0.97] border-b border-[#C9A45C]/20 py-2">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between gap-8">
       {/* Zona 1: Logo */}
       <a href="#inicio" class="flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7B2638] rounded-md" aria-label="Sabor de Hogar - Ir al inicio">
-        <img src="/logo.webp" alt="Logotipo Sabor de Hogar Pan de Pascua" width="480" height="233" class="h-14 sm:h-16 w-auto object-contain" />
+        <Image src={logo} alt="Logotipo Sabor de Hogar Pan de Pascua" width={132} height={64} densities={[1, 2, 3]} loading="eager" decoding="async" class="h-14 sm:h-16 w-auto object-contain" />
       </a>
 
       {/* Zona 2: Enlaces */}

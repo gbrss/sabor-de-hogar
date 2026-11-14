@@ -1,13 +1,17 @@
 ---
+import { Picture, getImage } from 'astro:assets';
 import WhatsAppButton from './WhatsAppButton.astro';
 import { GALLERY_ITEMS } from '../data/gallery';
+import { SITE_CONFIG } from '../config/site';
 
-// Enriquecemos las descripciones directamente aquí o puedes hacerlo en gallery.ts
-const enrichedItems = GALLERY_ITEMS.map(item => ({
-  ...item,
-  // Añadimos un pequeño detalle extra a la descripción visual
-  richDescription: item.description.length > 80 ? item.description : `${item.description} Una verdadera delicia artesanal.`
-}));
+// Para el visor ampliado se genera una versión más grande (solo se descarga al abrirlo)
+const enrichedItems = await Promise.all(
+  GALLERY_ITEMS.map(async (item) => ({
+    ...item,
+    richDescription: item.description.length > 80 ? item.description : `${item.description} Una verdadera delicia artesanal.`,
+    largeSrc: (await getImage({ src: item.image, width: 1024, format: 'webp', quality: 80 })).src,
+  })),
+);
 ---
 
 <section id="galeria" class="py-20 md:py-28 bg-[#FFF8EC] relative overflow-hidden">
@@ -31,7 +35,7 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
       {enrichedItems.map((item, idx) => (
         <div 
           class="group relative bg-white rounded-2xl overflow-hidden border border-[#C9A45C]/20 shadow-sm flex flex-col transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-[#C9A45C]/50 reveal-on-scroll"
@@ -44,15 +48,24 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
             data-title={item.title}
             data-subtitle={item.subtitle}
             data-desc={item.richDescription}
-            data-img={item.imageSrc}
+            data-img={item.largeSrc}
             data-msg={item.whatsappMessage}
             data-cat={item.category}
           >
-            <img
-              src={item.imageSrc}
+            <Picture
+              src={item.image}
               alt={item.alt}
-              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 animate-zoom-slow"
+              width={800}
+              height={600}
+              fit="cover"
+              position="center"
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1280px) 290px, (min-width: 640px) 45vw, 100vw"
+              formats={['avif', 'webp']}
               loading="lazy"
+              decoding="async"
+              pictureAttributes={{ class: 'block w-full h-full' }}
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
             
             <!-- Overlay con efecto de cristal al hacer hover -->
@@ -99,7 +112,7 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
   </div>
 
   <!-- MODAL LIGHTBOX PREMIUM -->
-  <div id="gallery-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-[#4A3028]/90 backdrop-blur-md" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="gallery-lightbox" data-wa-number={SITE_CONFIG.whatsappNumber} class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-[#4A3028]/90 backdrop-blur-md" role="dialog" aria-modal="true" aria-hidden="true">
     <!-- Contenedor con animación de entrada -->
     <div id="lightbox-content" class="relative bg-[#FFF8EC] rounded-3xl max-w-5xl w-full overflow-hidden shadow-[0_0_50px_rgba(201,164,92,0.2)] border border-[#C9A45C]/40 flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300">
       
@@ -170,17 +183,6 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
     opacity: 1;
   }
 
-  /* Zoom lento y constante para las tarjetas de la galería */
-  @keyframes zoomSlow {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); } /* Aumenta un 8% */
-    100% { transform: scale(1); }
-  }
-  
-  .animate-zoom-slow {
-    animation: zoomSlow 15s ease-in-out infinite;
-  }
-
   /* Zoom para la imagen del modal al abrirse */
   @keyframes zoomModal {
     from { transform: scale(1.1); }
@@ -191,18 +193,12 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
     animation: zoomModal 8s ease-out forwards;
   }
 
-  /* Ajuste: Desactivar el zoom lento al hacer hover para que no choquen las animaciones */
-  .group:hover .animate-zoom-slow {
-    animation-play-state: paused;
-    transform: scale(1.15); /* El zoom brusco del hover */
-  }
-
   /* Accesibilidad */
   @media (prefers-reduced-motion: reduce) {
     .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
     #lightbox-content { transform: scale(1); opacity: 1; transition: none; }
     .group:hover .group-hover\:scale-110 { transform: none; }
-    .animate-zoom-slow, .animate-zoom-modal { animation: none; transform: none; }
+    .animate-zoom-modal { animation: none; transform: none; }
   }
     /* Efecto pulsante para el botón de WhatsApp del modal */
   @keyframes pulseWA {
@@ -240,6 +236,7 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
 
 <script>
   const lightbox = document.getElementById('gallery-lightbox');
+  const waNumber = lightbox?.dataset.waNumber || '';
   const lightboxContent = document.getElementById('lightbox-content');
   const closeBtns = [document.getElementById('lightbox-close'), document.getElementById('lightbox-close-btn')];
   const img = document.getElementById('lightbox-img') as HTMLImageElement;
@@ -260,7 +257,7 @@ const enrichedItems = GALLERY_ITEMS.map(item => ({
     cat.textContent = card.dataset.cat || '';
     
     const msg = card.dataset.msg || '¡Hola! Quisiera consultar sobre esta opción.';
-    cta.href = `https://wa.me/56950075329?text=${encodeURIComponent(msg)}`;
+    cta.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
 
     // Reiniciamos la animación del modal cada vez que se abre
     const modalImg = document.getElementById('lightbox-img');

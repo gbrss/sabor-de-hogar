@@ -1,9 +1,16 @@
+import type { ImageMetadata } from 'astro';
+import panCompleto from '../assets/images/hero_pan_de_pascua.jpg';
+import panInterior from '../assets/images/galeria_pan_corte_interior.jpg';
+import empaqueRegalo from '../assets/images/galeria_empaque_regalo.jpg';
+import ingredientes from '../assets/images/ingredientes_frutos_especias.jpg';
+
 export interface GalleryItem {
   id: string;
   title: string;
   subtitle: string;
   description: string;
-  imageSrc: string;
+  /** Imagen fuente: Astro genera las versiones AVIF/WebP en cada tamaño durante el build. */
+  image: ImageMetadata;
   alt: string;
   category: string;
   whatsappMessage: string;
@@ -16,7 +23,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Dorado artesanal y corona de frutos",
     description:
       "Horneado lentamente hasta lograr un dorado uniforme y una cubierta de almendras tostadas, nueces enteras y frutas confitadas seleccionadas.",
-    imageSrc: "/images/hero_pan_de_pascua.webp",
+    image: panCompleto,
     alt: "Pan de Pascua casero artesanal completo sobre tabla de roble con almendras y nueces",
     category: "Presentación",
     whatsappMessage:
@@ -28,23 +35,11 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Miga esponjosa con distribución generosa de frutos",
     description:
       "Al cortar se aprecia la abundancia de nueces, pasas maceradas y el aroma inconfundible de nuestra esencia natural casera de especias.",
-    imageSrc: "/images/galeria_pan_corte_interior.webp",
+    image: panInterior,
     alt: "Corte transversal de pan de Pascua chileno mostrando textura suave y frutos secos",
     category: "Textura",
     whatsappMessage:
       "¡Hola! Vi el corte interior del pan de Pascua en la galería de fotos. ¿Qué tamaños o presentaciones tienen disponibles?",
-  },
-  {
-    id: "esencia-natural",
-    title: "Preparación de la Esencia Natural",
-    subtitle: "El secreto del aroma: infusión propia de especias",
-    description:
-      "Elaboramos nuestra propia esencia a fuego lento con canela en rama, anís estrellado, clavo de olor, vainilla y ralladura de cítricos.",
-    imageSrc: "/images/esencia_artesanal_preparacion.webp",
-    alt: "Olla tradicional con infusión de especias naturales, canela y vainilla para pan de Pascua",
-    category: "Elaboración",
-    whatsappMessage:
-      "¡Hola! Me interesó mucho que preparen su propia esencia natural para el pan de Pascua. Quisiera hacer un encargo.",
   },
   {
     id: "empaque-navideno",
@@ -52,7 +47,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Envoltorio rústico con cinta borgoña y tarjeta",
     description:
       "Pensado para compartir en la mesa navideña o como un detalle de cariño para familiares, amigos y colaboradores.",
-    imageSrc: "/images/galeria_empaque_regalo.webp",
+    image: empaqueRegalo,
     alt: "Pan de Pascua envuelto en papel kraft con lazo de hilo burdeo y ramita aromática",
     category: "Presentación",
     whatsappMessage:
@@ -64,22 +59,10 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     subtitle: "Ingredientes nobles tratados con dedicación",
     description:
       "Nueces chilenas de primera selección, pasas rubias y morenas, junto a una combinación equilibrada de especias aromáticas.",
-    imageSrc: "/images/ingredientes_frutos_especias.webp",
+    image: ingredientes,
     alt: "Cuencos rústicos con nueces frescas, pasas doradas y canela en rama sobre mantel de lino",
     category: "Ingredientes",
     whatsappMessage:
       "¡Hola! Vi los ingredientes en su sitio web. Quisiera consultar detalles y encargar para esta Navidad.",
-  },
-  {
-    id: "superficie-textura",
-    title: "Corteza Glaseada y Caramelo Suave",
-    subtitle: "Primer plano de la terminación dorada",
-    description:
-      "El glaseado sutil protege la humedad interior y resalta el brillo natural de las nueces y almendras recién horneadas.",
-    imageSrc: "/images/hero_pan_de_pascua.webp",
-    alt: "Detalle de la superficie dorada y frutos caramelizados del pan de Pascua casero",
-    category: "Textura",
-    whatsappMessage:
-      "¡Hola! Quisiera encargar un pan de Pascua casero para mi familia en Santiago.",
   },
 ];

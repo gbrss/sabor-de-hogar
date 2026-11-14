@@ -11,13 +11,13 @@
 
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #FFF8EC;
     color: #4A3028;
   }
 
   h1, h2, h3, .font-serif-display {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-cormorant), Georgia, serif;
     letter-spacing: -0.015em;
   }
 }
