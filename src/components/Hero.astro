@@ -1,8 +1,16 @@
 ---
 import { Picture } from 'astro:assets';
 import WhatsAppButton from './WhatsAppButton.astro';
-import { SITE_CONFIG } from '../config/site';
+import { SITE_CONFIG, formatCLP, formatDate, lowestPrice } from '../config/site';
 import { HERO_IMAGE } from '../data/heroImage';
+
+// Con datos cargados en site.ts, la nota bajo los botones muestra precio y plazo reales
+const fromPrice = lowestPrice();
+const deadline = SITE_CONFIG.offer.orderDeadline;
+const heroNote = [
+  fromPrice ? `Desde ${formatCLP(fromPrice)}` : '',
+  deadline ? `Encargos hasta el ${formatDate(deadline)}` : 'Pedidos por encargo en Santiago',
+].filter(Boolean).join(' · ') + '.';
 ---
 
 <section id="inicio" class="relative min-h-[90vh] flex items-center overflow-hidden bg-[#FFF8EC]">
@@ -79,7 +87,7 @@ import { HERO_IMAGE } from '../data/heroImage';
         <!-- Nota de envío -->
         <div class="hero-rise flex items-center gap-2 text-sm text-[#4A3028]/80" style="animation-delay: 160ms;">
           <svg class="w-4 h-4 text-[#214A35]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-          Pedidos por encargo en Santiago.
+          {heroNote}
         </div>
       </div>
 

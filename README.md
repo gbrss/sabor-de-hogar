@@ -128,7 +128,26 @@ Para reemplazar con las fotografías reales del dueño de Sabor de Hogar:
 - Actualiza los `import` en `src/data/gallery.ts`, `src/data/heroImage.ts` (foto principal) y `src/components/BrandStory.astro`.
 - Resolución recomendada: 1600 px de ancho o más.
 
-### 3. Agregar las redes sociales
+### 3. Cargar precios, plazo, entregas y pago
+En `src/config/site.ts`, completa `offer`. Con datos aparecen solos: la sección **Precios y entregas**, el enlace "Precios" del menú, "Desde $X · Encargos hasta el…" bajo los botones del inicio, la presentación en el formulario de pedido, respuestas concretas en las preguntas frecuentes y los precios para Google. Lo que quede vacío no se muestra.
+```typescript
+offer: {
+  products: [
+    { name: "Pan de Pascua tradicional", size: "500 g", price: 9990 },
+    { name: "Pan de Pascua tradicional", size: "1 kg", price: 17990, note: "Ideal para compartir" },
+  ],
+  orderDeadline: "2026-12-20",            // AAAA-MM-DD
+  deliveryZones: ["Ñuñoa", "Providencia"],
+  deliveryNote: "Despacho $3.000.",
+  pickup: "Retiro en Ñuñoa, coordinando por WhatsApp.",
+  paymentMethods: ["Transferencia", "Efectivo al retirar"],
+},
+```
+(Los valores de arriba son solo un ejemplo de formato.)
+
+Los formularios **Arma tu pedido** y **Pide tu cotización** (empresas) no envían datos a ningún servidor: abren WhatsApp con el pedido ya escrito.
+
+### 4. Agregar las redes sociales
 En `src/config/site.ts`, completa `social` con las URLs reales de los perfiles. Los íconos del footer y los datos para Google (`sameAs`) aparecen solo para las redes que tengan URL:
 ```typescript
 social: {
@@ -138,7 +157,7 @@ social: {
 },
 ```
 
-### 4. Medir visitas y clics a WhatsApp
+### 5. Medir visitas y clics a WhatsApp
 - **Visitas (sin código ni cookies):** en Cloudflare, abre el proyecto de Pages → **Metrics** → **Web Analytics** → **Enable**.
 - **Clics a WhatsApp:** cada clic ya queda registrado con la sección de origen (`inicio`, `galeria`, `menu`, `flotante`, `footer`...). Para verlos en Google Analytics 4, pega el ID de medición en `src/config/site.ts`:
   ```typescript
@@ -146,7 +165,7 @@ social: {
   ```
   Se registran como el evento `generate_lead`. Con el campo vacío no se carga ningún script externo.
 
-### 5. Actualizar el dominio final
+### 6. Actualizar el dominio final
 Si cambia el dominio, actualízalo en `src/config/site.ts` (`domain`), en `astro.config.mjs` (`site`), en `src/pages/robots.txt.ts` y en `public/sitemap.xml`.
 
 ---

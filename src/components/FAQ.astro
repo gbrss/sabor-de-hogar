@@ -1,31 +1,64 @@
 ---
 import WhatsAppButton from './WhatsAppButton.astro';
-import { SITE_CONFIG } from '../config/site';
+import { SITE_CONFIG, formatCLP, formatDate } from '../config/site';
+
+// Las respuestas usan los datos reales de src/config/site.ts cuando están cargados
+const { products, orderDeadline, deliveryZones, deliveryNote, pickup, paymentMethods } = SITE_CONFIG.offer;
+const join = (parts: string[]) => parts.filter(Boolean).join(' ');
+
+const deliveryAnswer = deliveryZones.length || deliveryNote || pickup
+  ? join([
+      deliveryZones.length ? `Despachamos en ${deliveryZones.join(', ')}.` : '',
+      deliveryNote,
+      pickup,
+      'Si tu comuna no aparece, escríbenos y vemos cómo hacerlo llegar.',
+    ])
+  : 'La atención está orientada a Santiago de Chile; consulta la disponibilidad para tu sector al escribirnos por WhatsApp.';
+
+const productsAnswer = products.length
+  ? `${products.map((p) => `${p.name} de ${p.size}: ${formatCLP(p.price)}`).join('; ')}. Para pedidos más grandes o para empresas, pide tu cotización.`
+  : 'Las presentaciones disponibles se confirman por WhatsApp al momento de tu consulta.';
 
 const faqs = [
   {
     q: "¿Cómo puedo realizar un pedido?",
-    a: "Los pedidos se coordinan directamente por WhatsApp. Al escribirnos, te informaremos sobre los tamaños disponibles, las fechas estimadas de entrega o retiro en Santiago y coordinaremos tu encargo de manera personalizada.",
+    a: "Completa el formulario \"Arma tu pedido\" y se abrirá WhatsApp con tu pedido escrito; solo tienes que enviarlo. También puedes escribirnos directo y coordinamos tamaño, fecha y entrega contigo.",
     msg: SITE_CONFIG.messages.hero,
     btn: "Coordinar pedido por WhatsApp",
   },
+  ...(orderDeadline
+    ? [{
+        q: "¿Hasta cuándo puedo encargar?",
+        a: `Recibimos encargos hasta el ${formatDate(orderDeadline)}. Como preparamos en tandas pequeñas, conviene reservar con tiempo.`,
+        msg: SITE_CONFIG.messages.hero,
+        btn: "Reservar mi pedido",
+      }]
+    : []),
   {
     q: "¿Dónde realizan las entregas?",
-    a: "La atención está orientada a Santiago de Chile; consulta la disponibilidad para tu sector al escribirnos por WhatsApp.",
+    a: deliveryAnswer,
     msg: SITE_CONFIG.messages.faqDelivery,
     btn: "Consultar cobertura en mi comuna",
   },
   {
     q: "¿Qué presentaciones están disponibles?",
-    a: "Las presentaciones disponibles se confirman por WhatsApp al momento de tu consulta.",
+    a: productsAnswer,
     msg: SITE_CONFIG.messages.gallery,
     btn: "Consultar opciones de presentación",
   },
+  ...(paymentMethods.length
+    ? [{
+        q: "¿Cómo puedo pagar?",
+        a: `Aceptamos ${paymentMethods.join(', ')}. Te confirmamos el total por WhatsApp antes de pagar.`,
+        msg: SITE_CONFIG.messages.default,
+        btn: "Consultar por WhatsApp",
+      }]
+    : []),
   {
-    q: "¿Cómo puedo consultar los ingredientes?",
-    a: "Para conocer los ingredientes específicos, consulta directamente con el elaborador por WhatsApp.",
+    q: "¿Qué ingredientes llevan?",
+    a: "Llevan nueces, almendras, pasas y frutas confitadas, con nuestra esencia natural de canela, clavo, anís y cítricos. Si tienes alguna alergia o necesitas el detalle completo, consúltanos antes de encargar.",
     msg: SITE_CONFIG.messages.faqIngredients,
-    btn: "Consultar ingredientes específicos",
+    btn: "Consultar ingredientes",
   },
 ];
 ---

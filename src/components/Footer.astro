@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import WhatsAppButton from './WhatsAppButton.astro';
-import { SITE_CONFIG } from '../config/site';
+import { SITE_CONFIG, getNavLinks } from '../config/site';
+const navLinks = getNavLinks();
 import sello from '../assets/brand/sello.webp';
 
 const currentYear = new Date().getFullYear();
@@ -78,7 +79,7 @@ const hasSocial = Boolean(instagram || facebook || tiktok);
       <div class="md:col-span-3 flex flex-col items-center md:items-start">
         <h3 class="font-serif-display text-lg font-bold text-[#FFF8EC] mb-4">Navegación</h3>
         <ul class="space-y-2.5 text-sm flex flex-col items-center md:items-start">
-          {SITE_CONFIG.navLinks.map((link) => (
+          {navLinks.map((link) => (
             <li>
               <a href={link.href} class="text-[#FFF8EC]/75 hover:text-[#C9A45C] transition-colors">
                 {link.label}

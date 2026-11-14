@@ -6,7 +6,9 @@ import Hero from '../components/Hero.astro';
 import FeatureCards from '../components/FeatureCards.astro';
 import BrandStory from '../components/BrandStory.astro';
 import Gallery from '../components/Gallery.astro';
+import Pricing from '../components/Pricing.astro';
 import CallToAction from '../components/CallToAction.astro';
+import Business from '../components/Business.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 import FloatingWhatsApp from '../components/FloatingWhatsApp.astro';
@@ -34,7 +36,9 @@ const heroPreload = await getImage({ ...heroOptions, widths: [...widths], format
   <FeatureCards />
   <BrandStory />
   <Gallery />
+  <Pricing />
   <CallToAction />
+  <Business />
   <FAQ />
   </main>
   <Footer />

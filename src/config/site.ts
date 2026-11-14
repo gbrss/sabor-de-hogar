@@ -1,7 +1,18 @@
 /**
  * Configuración central del negocio y enlaces de Sabor de Hogar.
- * Permite cambiar fácilmente números de contacto, mensajes de WhatsApp y dominios.
+ * Permite cambiar fácilmente números de contacto, mensajes de WhatsApp, precios y dominios.
  */
+
+export interface Product {
+  /** Nombre visible, ej. "Pan de Pascua tradicional" */
+  name: string;
+  /** Tamaño o peso, ej. "1 kg" */
+  size: string;
+  /** Precio en pesos chilenos, sin puntos: 12000 */
+  price: number;
+  /** Detalle opcional, ej. "Rinde 10 porciones" */
+  note?: string;
+}
 
 export interface SiteConfig {
   name: string;
@@ -21,7 +32,25 @@ export interface SiteConfig {
     faqIngredients: string;
     faqDelivery: string;
   };
-  navLinks: Array<{ label: string; href: string }>;
+  /**
+   * Datos de venta. Todo lo que quede vacío NO se muestra en el sitio: la sección de precios
+   * y entregas, la fecha límite del inicio y las respuestas concretas de las preguntas
+   * frecuentes aparecen solas al completar estos campos.
+   */
+  offer: {
+    /** Presentaciones a la venta. Vacío = no se muestran precios. */
+    products: Product[];
+    /** Fecha límite para encargar, formato AAAA-MM-DD (ej. "2026-12-18"). Vacío = no se muestra. */
+    orderDeadline: string;
+    /** Comunas con despacho, ej. ["Ñuñoa", "Providencia"]. */
+    deliveryZones: string[];
+    /** Costo o condición del despacho, ej. "Despacho $3.000" o "Despacho gratis desde 2 panes". */
+    deliveryNote: string;
+    /** Retiro, ej. "Retiro en Ñuñoa, coordinando por WhatsApp". Vacío = no se ofrece retiro. */
+    pickup: string;
+    /** Formas de pago, ej. ["Transferencia", "Efectivo al retirar"]. */
+    paymentMethods: string[];
+  };
   /** Perfiles reales del negocio. Los que queden vacíos no se muestran en el sitio. */
   social: {
     instagram: string;
@@ -64,13 +93,14 @@ export const SITE_CONFIG: SiteConfig = {
     faqDelivery:
       "¡Hola Sabor de Hogar! Quisiera consultar sobre los sectores de entrega en Santiago y fechas para coordinar mi pedido.",
   },
-  navLinks: [
-    { label: "Inicio", href: "#inicio" },
-    { label: "Nuestra esencia", href: "#esencia" },
-    { label: "Galería", href: "#galeria" },
-    { label: "Preguntas", href: "#preguntas" },
-    { label: "Contacto", href: "#contacto" },
-  ],
+  offer: {
+    products: [],
+    orderDeadline: "",
+    deliveryZones: [],
+    deliveryNote: "",
+    pickup: "",
+    paymentMethods: [],
+  },
   social: {
     instagram: "",
     facebook: "",
@@ -80,6 +110,46 @@ export const SITE_CONFIG: SiteConfig = {
     ga4Id: "",
   },
 };
+
+/** ¿Hay al menos un dato de venta cargado? Controla si se muestra la sección de precios y entregas. */
+export function hasOfferInfo(): boolean {
+  const o = SITE_CONFIG.offer;
+  return Boolean(
+    o.products.length || o.orderDeadline || o.deliveryZones.length || o.deliveryNote || o.pickup || o.paymentMethods.length,
+  );
+}
+
+/** Enlaces del menú. "Precios" aparece solo cuando hay datos de venta. */
+export function getNavLinks(): Array<{ label: string; href: string }> {
+  return [
+    { label: "Nuestra esencia", href: "#esencia" },
+    { label: "Galería", href: "#galeria" },
+    ...(hasOfferInfo() ? [{ label: "Precios", href: "#precios" }] : []),
+    { label: "Empresas", href: "#empresas" },
+    { label: "Preguntas", href: "#preguntas" },
+    { label: "Hacer pedido", href: "#contacto" },
+  ];
+}
+
+/** Precio en pesos chilenos: 12000 → "$12.000" */
+export function formatCLP(value: number): string {
+  return `$${Math.round(value).toLocaleString('es-CL')}`;
+}
+
+/** Fecha AAAA-MM-DD → "viernes 18 de diciembre" (sin desfase de zona horaria) */
+export function formatDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+    .format(new Date(Date.UTC(y, m - 1, d)))
+    .replace(',', '');
+}
+
+/** Precio más bajo de las presentaciones, o null si no hay precios. */
+export function lowestPrice(): number | null {
+  const prices = SITE_CONFIG.offer.products.map((p) => p.price).filter((p) => p > 0);
+  return prices.length ? Math.min(...prices) : null;
+}
 
 /**
  * Genera el enlace directo a WhatsApp con el mensaje codificado correctamente

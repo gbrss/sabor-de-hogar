@@ -1,0 +1,76 @@
+---
+/**
+ * Precios y entregas. Se muestra solo si hay datos en SITE_CONFIG.offer (src/config/site.ts);
+ * cada bloque aparece únicamente cuando su dato está completo.
+ */
+import WhatsAppButton from './WhatsAppButton.astro';
+import { SITE_CONFIG, formatCLP, formatDate, hasOfferInfo } from '../config/site';
+
+const { products, orderDeadline, deliveryZones, deliveryNote, pickup, paymentMethods } = SITE_CONFIG.offer;
+const show = hasOfferInfo();
+const hasDelivery = deliveryZones.length > 0 || Boolean(deliveryNote);
+---
+
+{show && (
+  <section id="precios" class="py-16 md:py-24 bg-[#FFF8EC]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-semibold tracking-wider uppercase text-[#7B2638]">Precios y entregas</span>
+        <h2 class="font-serif-display text-3xl sm:text-4xl text-[#4A3028] font-bold mt-2">
+          Elige tu pan de Pascua
+        </h2>
+        {orderDeadline && (
+          <p class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#7B2638] text-[#FFF8EC] text-sm font-semibold">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Encargos hasta el {formatDate(orderDeadline)}
+          </p>
+        )}
+      </div>
+
+      {products.length > 0 && (
+        <div class:list={['grid gap-6 mb-12 mx-auto', products.length === 1 ? 'max-w-sm' : products.length === 2 ? 'sm:grid-cols-2 max-w-3xl' : 'sm:grid-cols-2 lg:grid-cols-3']}>
+          {products.map((p) => (
+            <article class="bg-white rounded-2xl border border-[#C9A45C]/30 p-6 flex flex-col shadow-sm">
+              <h3 class="font-serif-display text-xl font-bold text-[#4A3028]">{p.name}</h3>
+              <p class="text-sm text-[#4A3028]/75">{p.size}</p>
+              <p class="font-serif-display text-4xl font-bold text-[#7B2638] my-4">{formatCLP(p.price)}</p>
+              {p.note && <p class="text-sm text-[#4A3028]/80 mb-4">{p.note}</p>}
+              <WhatsAppButton
+                message={`¡Hola Sabor de Hogar! Quiero encargar ${p.name} de ${p.size} (${formatCLP(p.price)}). ¿Cómo coordinamos?`}
+                variant="primary"
+                size="md"
+                class="mt-auto w-full"
+              >
+                Pedir este
+              </WhatsAppButton>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {(hasDelivery || pickup || paymentMethods.length > 0) && (
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+          {hasDelivery && (
+            <div class="rounded-xl bg-[#FAF2E3] border border-[#C9A45C]/25 p-5">
+              <h3 class="font-serif-display text-lg font-bold text-[#4A3028] mb-2">Despacho</h3>
+              {deliveryZones.length > 0 && <p class="text-sm text-[#4A3028]/85">{deliveryZones.join(', ')}.</p>}
+              {deliveryNote && <p class="text-sm text-[#4A3028]/85 mt-1">{deliveryNote}</p>}
+            </div>
+          )}
+          {pickup && (
+            <div class="rounded-xl bg-[#FAF2E3] border border-[#C9A45C]/25 p-5">
+              <h3 class="font-serif-display text-lg font-bold text-[#4A3028] mb-2">Retiro</h3>
+              <p class="text-sm text-[#4A3028]/85">{pickup}</p>
+            </div>
+          )}
+          {paymentMethods.length > 0 && (
+            <div class="rounded-xl bg-[#FAF2E3] border border-[#C9A45C]/25 p-5">
+              <h3 class="font-serif-display text-lg font-bold text-[#4A3028] mb-2">Formas de pago</h3>
+              <p class="text-sm text-[#4A3028]/85">{paymentMethods.join(' · ')}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+)}
